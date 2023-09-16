@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'ecomapp',
     'accounts',
-    'store'
+    'store',
+    'cartt'
 ]
 
 MIDDLEWARE = [
@@ -66,6 +67,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'ecomapp.context_processors.menu_links',
+                'cartt.context_processors.counter',
             ],
         },
     },

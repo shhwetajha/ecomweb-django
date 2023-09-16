@@ -9,4 +9,13 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 
+
+
+class VariationAdmin(admin.ModelAdmin):
+    list_display=['Products','variation_category','variation_value','is_active']
+    list_editable=('is_active',)
+    list_filter=['Products','variation_category','variation_value','is_active']
+
+
 admin.site.register(products,ProductAdmin)
+admin.site.register(Variation,VariationAdmin)
