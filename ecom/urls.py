@@ -23,7 +23,7 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('ecomapp.urls')),
-    path('',include('accounts.urls')),
+    path('accounts/',include('accounts.urls')),
     path('store/',include('store.urls')),
     path('cart/',include('cartt.urls')),
     path('',view_home,name='home')
