@@ -42,7 +42,10 @@ INSTALLED_APPS = [
     'ecomapp',
     'accounts',
     'store',
-    'cartt'
+    'cartt',
+    'orders',
+    'api',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -132,7 +135,13 @@ STATICFILES_DIRS= ['ecom/static',]
 MEDIA_URL='/media/'
 MEDIA_ROOT=BASE_DIR/'media'
 
-
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+         'rest_framework.permissions.AllowAny',
+    ]
+}
 
 
 # STATICFILES_DIRS=[

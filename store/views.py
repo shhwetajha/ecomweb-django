@@ -11,7 +11,7 @@ from django.db.models import Q
 def view_store(request,category_slug=None):
     categories=None
     productss=None
-
+ 
     if category_slug != None:
         # get_object_or_404-it will just bring in the cat if found
         categories=get_object_or_404(Category,slug=category_slug)

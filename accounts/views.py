@@ -150,9 +150,7 @@ def view_forgotpassword(request):
             user=account.objects.get(email__iexact=email)
             current_site=get_current_site(request)
             mail_subject='Reset your password'
-            message=render_to_string('accounts/reset_password_email.html',{
-                'user':user,
-                'domain':current_site,
+            message=render_to_string('accounts/reset_password_email.html',{'domain':current_site,
                 'uid':urlsafe_base64_encode(force_bytes(user.pk)),
                 'token':default_token_generator.make_token(user),})
             to_email=email
