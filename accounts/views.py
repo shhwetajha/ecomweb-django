@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.http import HttpResponse
 from .forms import *
 from django.contrib import messages,auth
@@ -13,6 +13,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import EmailMessage
 from cartt.views import _cart_id
 from cartt.models import cart,CartItem
+from orders.models import *
 import requests
 # Create your views here.
 
@@ -140,7 +141,14 @@ def activate(request,uidb64,token):
 
 @login_required(login_url='login')   
 def dashboard(request):
-    return render(request,'accounts/dashboard.html')
+    order=Order.objects.order_by('created_at').filter(user_id=request.user.id,is_ordered=True)
+    order_count=order.count()
+
+    user_profile=UserProfile.objects.get(user_id=request.user.id)
+    context={'order_count':order_count,'user_profile':user_profile}
+
+
+    return render(request,'accounts/dashboard.html',context)
 
 
 def view_forgotpassword(request):
@@ -198,7 +206,65 @@ def view_resetpassword(request):
             messages.error('password and confirm password do not match!')
             return redirect('resetpassword')
     return render(request,'accounts/resetpassword.html')
+
+
+@login_required(login_url='login')
+def view_myOrders(request):
+    order=Order.objects.filter(user_id=request.user.id,is_ordered=True).order_by('-created_at')
+    context={'orders':order}
+    return render(request,'accounts/myorders.html',context)
+
+@login_required(login_url='login')
+def view_editprofile(request):
+    userProfile=get_object_or_404(UserProfile,user=request.user)
+    if request.method=='POST':
+        userform=UserForms(request.POST,instance=request.user)
+        userProfileform=UserProfileForms(request.POST,request.FILES,instance=userProfile)
+        if userform.is_valid() and userProfileform.is_valid():
+            userform.save()
+            userProfileform.save()
+            messages.success(request,'Your Profile has been successfully updated')
+            return redirect('edit_profile')
+    else:
+        userform=UserForms(instance=request.user)
+        userProfileform=UserProfileForms(instance=userProfile)
+    context={'userform':userform,'userProfileform':userProfileform,'userprofile':userProfile}
+    return render(request,'accounts/edit_profile.html',context)
+
+@login_required(login_url='login')
+def view_changePassword(request):
+    if request.method=='POST':
+        current_password=request.POST["current_password"]
+        password=request.POST["password"]
+        confirm_password=request.POST["confirm password"]
+
+        user=account.objects.get(username__exact=request.user.username)
+        if  password == confirm_password:
+            success=user.check_password(current_password)
+            if success:
+                user.set_password(password)
+                user.save()
+                messages.success(request,'Your Password has been successfully updated!')
+                return redirect('changePassword')
+            else:
+                messages.error(request,'Please enter valid current password')
+                return redirect('changePassword')
+        else:
+            messages.error(request,'Password and confirm Password does not match')
+            return redirect('changePassword')
+    return render(request,'accounts/changePassword.html')
  
+
+def view_orderdetail(request,order_id):
+    order_product=OrderProduct.objects.filter(order__order_number=order_id)
+    order=Order.objects.get(order_number=order_id)
+    sub_total=0
+    for item in order_product:
+        sub_total+=item.product.price*item.quantity
+    
+    
+    context={'order_product':order_product,'orders':order,'order_number':order_id,'sub_total':sub_total}
+    return render(request,'accounts/orderdetail.html',context)
 
 
 

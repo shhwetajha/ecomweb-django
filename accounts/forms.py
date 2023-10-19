@@ -35,3 +35,24 @@ class UserForms(forms.ModelForm):
                 confirm_password=cleaned_data.get('confirm_password')
                 if password!=confirm_password:
                         raise forms.ValidationError("password does not match")
+                
+
+class UserForms(forms.ModelForm):
+       class Meta:
+              model=account
+              fields=['first_name','last_name','phone']
+        
+       def __init__(self,*args,**kwargs):
+              super(UserForms,self).__init__(*args,**kwargs)
+              for field in self.fields:
+                     self.fields[field].widget.attrs['class']='form-control'
+
+class UserProfileForms(forms.ModelForm):
+       profile_picture=forms.ImageField(required=False,error_messages={'invalid':('Image Files only')},widget=forms.FileInput)
+       class Meta:
+              model=UserProfile
+              fields=['address_line_1','address_line_2','state','city','country','profile_picture']
+       def __init__(self,*args,**kwargs):
+              super(UserProfileForms,self).__init__(*args,**kwargs)
+              for field in self.fields:
+                     self.fields[field].widget.attrs['class']='form-control'

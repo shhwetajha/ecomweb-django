@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="section-conten padding-y bg">
+    
+    {% include 'includes/alerts.html' %}
+    <div class="container">
+        <div class="row">
+            {% include 'includes/dashboard_sidebar.html' %}
+        <main class="col-md-9">
+            <article class="card">
+            <header class="card-header">
+                <strong class="d-inline-block mr-3">Your Order History</strong>
+                
+            </header>
+            <div class="card-body">
+<div class="text-right"><img src='{{userprofile.profile_picture.url}}' alt="profile Picture" width="150" style="border-radius:50%"></div>
+                <div class="row">
+            <div class="col-md-12">
+              <form method='POST' action="{% url 'edit_profile' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="form-row">
+                  <div class="form-group col-md-6" >
+                    <label>First-name</label>
+                    {{userform.first_name}}
+                    
+                  </div>
+
+                  <div class="form-group col-md-6">
+                    <label>Last Name</label>
+                    {{userform.last_name}}
+                   
+
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-6" >
+                    <label>Phone Number</label>
+                    {{userform.phone}}
+                    
+                  </div>
+
+                  <div class="form-group col-md-6">
+                    <label>Profile Picture</label>
+                    {{userProfileform.profile_picture}}
+
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Address_line_1   </label>
+                  {{userProfileform.address_line_1}}
+                
+                </div>
+
+                <div class="form-group">
+                  <label>Address_line_2</label>
+                  {{userProfileform.address_line_2}}
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-4">
+                    <label>City</label>
+                    {{userProfileform.city}}
+                   
+                  </div>
+
+                  <div class="form-group col-md-4">
+                    <label>State</label>
+                    {{userProfileform.state}}
+                                   
+                  </div>
+
+                  <div class="form-group col-md-4">
+                    <label>Country</label>
+                    {{userProfileform.country}}
+                    
+                  </div>
+
+
+                </div>
+                <input type="submit" class="btn btn-primary">
+
+              </form>
+               
+               
+            </div>
+           
+            </article> <!-- order-group.// --> 
+        </main>
+    </div> <!-- row.// -->
+    </div>
+</div>
+
+</div>
+    
+    </section>
+
+{% endblock %}
