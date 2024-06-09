@@ -331,6 +331,16 @@ def get_cities(request):
     return render(request,'get-cities.html',context)
 
 
-
-
+def dependent_field(request):
+    country_id=request.GET.get('country',None)
+    state_id=request.GET.get('state',None)
+    state=None
+    city=None
+    if country_id:
+        state=State.objects.filter(country_id=country_id)
+    if state_id:
+        city=City.objects.filter(state_id=state_id)
+    country=Country.objects.all()
+    context={'countries':country,'state':state,'city':city}
+    return render(request,'dependentfield.html',context)
 

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <p><label for="country">Country</label>
+        <select id="country" onchange="countryfield()">
+        <option selected>Select Country</option>
+        {% for country in countries %}  
+        <option value="{{country.id}}"{% if request.GET.country == country.id|lower %}selected{% endif %}>{{country.name}}</option>
+        {% endfor %}
+        </select>
+    </p>
+    
+        <label for ="state">State</label>
+        <select id="state" onchange="statefield()">
+            <option selected>Choose state</option>
+            {% for i in state %}
+            <option value="{{i.id}}"{% if request.GET.state == i.id|lower %}selected {% endif %}>{{i.name}}</option> 
+            {% endfor %}
+        </select>
+        <br><br/>
+        <label for="city">City</label>
+        <select id="city" >
+        <option selected>Choose cities</option>
+        {% for i in city %}
+        <option value="{{i.id}}">{{i.name}}</option>
+        {% endfor %}
+        </select>
+        <br><br/>
+
+        <script>
+            function countryfield(){
+                countryid=document.getElementById('country').value;
+                window.location="/accounts/drop/?country="+countryid;
+            }
+
+            function statefield(){
+                stateid=document.getElementById('state').value;
+                window.location="/accounts/drop/?country="+'{{request.GET.country}}'+"&state="+stateid;
+            }
+        </script>
+    
+</body>
+</html>
