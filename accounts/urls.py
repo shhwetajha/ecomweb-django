@@ -13,7 +13,16 @@ urlpatterns=[
     path('myOrders/',view_myorders,name='myOrders'),
     path('orderdetail/<int:order_number>/',view_orderdetail,name='orderdetail'),
     path('change_password/',view_changepassword,name='change_password'),
-    path('pdfupdate/',view_pdfupdate,name='pdfupdate')
+    path('pdfupdate/',view_pdfupdate,name='pdfupdate'),
+    path('add/', add_location, name='add_location'),
+    path('suggest/', suggest_location, name='suggest_location'),
+    path('load-states/', load_states, name='load_states'),
+    path('load-cities/', load_cities, name='load_cities'),
+    path('location/',create_location ,name='location'),
+    path('loc/',view_location,name='location'),
+    path('get-states/',get_states,name='get_states'),
+    path('get-cities/',get_cities,name='get_cities')
+
     
 
 ]

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+       
+
+      
+   
+    <p><label>Country</label>
+    <select id="country" name="country">
+    <option value="" disabled selected>Select Country</option>
+    {% for country in countries %}  
+    <option value="{{country.id}}">{{country.name}}</option>
+    {% endfor %}
+    </select>
+</p>
+
+    <label>State</label>
+    <select id="state" name="state"></select>
+    <br><br/>
+    <label>City</label>
+    <select id="city" name="city"></select>
+    <br><br/>
+   
+
+    <!-- {% for city in cities %}
+    {{city.name}}
+    {{city.state}}
+    {{city.state.country}}
+    {% endfor %} -->
+
+    <br/>
+
+    </form>
+    <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function(){
+            $("#country").change(function(){
+                var country_id=$(this).val();
+                var url="/accounts/get-states/?country_id="+country_id;
+                $.get(url,function(data,status){
+                $("#state").html(data);
+            });
+
+            
+            });
+
+        });
+
+//         $(document).ready(function() {
+//     $("#country").change(function() {
+//         var country_id = $(this).val();
+//         var url = "/get-states/?country_id="+country_id;
+//         $.get(url, function(data, status){
+//             $("#state").html(data);
+//         });
+//     });
+// });
+
+
+
+
+
+
+
+
+
+        $(document).ready(function(){
+            $("#state").change(function(){
+                var state_id=$(this).val();
+                var url="/accounts/get-cities/?state_id="+state_id;
+                $.get(url,function(data,status){
+                $("#city").html(data);
+            });
+
+            });
+
+        });
+        </script>
+</body>
+</html>

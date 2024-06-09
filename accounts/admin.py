@@ -23,6 +23,11 @@ class UserProfileAdmin(admin.ModelAdmin):
 
 
 
+
     #  return format_html('<img src="{}" width="30" style="border-radius:50%"'.format(object.profile_picture.url))
 admin.site.register(account,AccountAdmin)
 admin.site.register(UserProfile,UserProfileAdmin)
+admin.site.register(State)
+admin.site.register(City)
+admin.site.register(Country)
+

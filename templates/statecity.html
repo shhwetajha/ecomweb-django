@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Location</title>
+</head>
+<body>
+    <h1>Add Location</h1>
+    <form method="post" action="{% url 'location' %}">
+        {% csrf_token %}
+        <label>Country</label>
+        <input type="text" name="country">
+        <label>state</label>
+        <input type="text" name="state">
+        <label>city</label>
+        <input type="text" name="city">
+        <button type="submit">Add</button>
+    </form>
+</body>
+</html>

@@ -258,6 +258,78 @@ def view_pdfupdate(request):
     return render(request,'accounts/pdfexport.html')
 
 
+from django.shortcuts import render, redirect
+from .models import Country, State, City
+from .forms import LocationForm, SuggestionForm
+from django.http import JsonResponse
+
+def add_location(request):
+    if request.method == "POST":
+        form = LocationForm(request.POST)
+        if form.is_valid():
+            country = form.cleaned_data['country']
+            state_name = form.cleaned_data['state']
+            city_name = form.cleaned_data['city']
+            
+            state, created = State.objects.get_or_create(name=state_name, country=country)
+            City.objects.get_or_create(name=city_name, state=state)
+            
+            return redirect('statecity')
+    else:
+        form = LocationForm()
+    return render(request, 'statecity.html', {'form': form})
+
+def suggest_location(request):
+    form = SuggestionForm()
+    return render(request, 'accounts/location.html', {'form': form})
+
+def load_states(request):
+    country_id = request.GET.get('country')
+    states = State.objects.filter(country_id=country_id).order_by('name')
+    return JsonResponse(list(states.values('id', 'name')), safe=False)
+
+def load_cities(request):
+    state_id = request.GET.get('state')
+    cities = City.objects.filter(state_id=state_id).order_by('name')
+    return JsonResponse(list(cities.values('id', 'name')), safe=False)
+
+
+def create_location(request):
+    if request.method =='POST':
+        country=request.POST.get('country')
+        state=request.POST.get('state')
+        city=request.POST.get('city')
+
+
+        count=Country.objects.create(name=country)
+        stat=State.objects.create(name=state,country=count)
+        cit=City.objects.create(name=city,state=stat)
+        return render(request,'statecity.html')
+    else:
+        return render(request,'statecity.html')
+    
+def view_location(request):
+    country=Country.objects.all()
+    context={'countries':country}
+    return render(request,'viewcountrydet.html',context)
+
+
+def get_states(request):
+    country_id=request.GET['country_id']
+    # get_country=Country.objects.get(id=country_id)
+    state=State.objects.filter(country_id=country_id)
+    context={"state":state}
+    print('********************')
+    return render(request,'get-states.html',context)
+
+
+
+def get_cities(request):
+    state_id=request.GET['state_id']
+    cities=City.objects.filter(state_id=state_id)
+    context={'cities':cities}
+    return render(request,'get-cities.html',context)
+
 
 
 

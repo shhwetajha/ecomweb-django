@@ -45,3 +45,32 @@ class UserProfileForm(forms.ModelForm):
         for field in self.fields:
             self.fields[field].widget.attrs['class'] ='form-control'
 
+
+
+from .models import Country, State, City
+
+class LocationForm(forms.Form):
+    country = forms.ModelChoiceField(queryset=Country.objects.all())
+    state = forms.CharField(max_length=100)
+    city = forms.CharField(max_length=100)
+
+class SuggestionForm(forms.Form):
+    country = forms.ModelChoiceField(queryset=Country.objects.all())
+    state = forms.ModelChoiceField(queryset=State.objects.none())
+    city = forms.ModelChoiceField(queryset=City.objects.none())
+
+class CountryForm(forms.ModelForm):
+    class Meta:
+        model=Country
+        fields='__all__'
+
+class StateForm(forms.ModelForm):
+    class Meta:
+        model=State
+        fields='__all__'
+
+class CityForm(forms.ModelForm):
+    class Meta:
+        model=State
+        fields='__all__'
+

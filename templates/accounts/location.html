@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Suggest Location</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Suggest Location</h1>
+    <form id="suggestion-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Get Suggestions</button>
+    </form>
+    <div id="suggestions">
+        <h2>Suggestions</h2>
+        <label for="id_state">State:</label>
+        <select id="id_state"></select>
+        <br>
+        <label for="id_city">City:</label>
+        <select id="id_city"></select>
+    </div>
+    <script>
+        $(document).ready(function() {
+            $('#id_country').change(function() {
+                var url = "{% url 'load_states' %}";
+                var countryId = $(this).val();
+                $.ajax({
+                    url: url,
+                    data: {
+                        'country': countryId
+                    },
+                    success: function(data) {
+                        $("#id_state").html('<option value="">Select state</option>');
+                        $("#id_city").html('<option value="">Select city</option>');
+                        $.each(data, function(key, value) {
+                            $("#id_state").append('<option value="' + value.id + '">' + value.name + '</option>');
+                        });
+                    }
+                });
+            });
+
+            $('#id_state').change(function() {
+                var url = "{% url 'load_cities' %}";
+                var stateId = $(this).val();
+                $.ajax({
+                    url: url,
+                    data: {
+                        'state': stateId
+                    },
+                    success: function(data) {
+                        $("#id_city").html('<option value="">Select city</option>');
+                        $.each(data, function(key, value) {
+                            $("#id_city").append('<option value="' + value.id + '">' + value.name + '</option>');
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
