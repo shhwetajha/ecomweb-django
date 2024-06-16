@@ -344,3 +344,27 @@ def dependent_field(request):
     context={'countries':country,'state':state,'city':city}
     return render(request,'dependentfield.html',context)
 
+
+
+# views.py
+# views.py
+from django.shortcuts import render
+from django.http import HttpResponse
+
+def dynamic_form(request):
+    if request.method == 'POST':
+        from_initial = request.POST.get('from_initial', None)
+        to_initial = request.POST.get('to_initial', None)
+        from_final = request.POST.get('from_final', None)
+        to_final = request.POST.get('to_final', None)
+
+        return HttpResponse(f'Initial From: {from_initial}, Initial To: {to_initial}<br>Final From: {from_final}, Final To: {to_final}')
+    
+    # If initial GET request or form not submitted yet
+    initial_from_value = 0
+    initial_to_value = 10
+    context = {
+        'initial_from_value': initial_from_value,
+        'initial_to_value': initial_to_value
+    }
+    return render(request, 'accounts/dynamic_form.html', context)

@@ -22,7 +22,8 @@ urlpatterns=[
     path('loc/',view_location,name='location'),
     path('get-states/',get_states,name='get_states'),
     path('get-cities/',get_cities,name='get_cities'),
-    path('drop/',dependent_field,name='dependent_field')
+    path('drop/',dependent_field,name='dependent_field'),
+    path('dynamic-form/', dynamic_form, name='dynamic_form'),
 
     
 
